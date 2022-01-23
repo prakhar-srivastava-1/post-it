@@ -7,7 +7,7 @@ from .serializers import PostSerializer
 class PostList(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     # override this built-in function to get user
     # currently logged in and put him as the poster
