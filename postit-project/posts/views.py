@@ -23,6 +23,16 @@ class PostRetrieveDestroy(generics.RetrieveDestroyAPIView):
     serializer_class = PostSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    # function to delete one's own post only
+    def delete(self, request, *args, **kwargs):
+        # grab the post if its created by current user
+        post = Post.objects.filter(pk=kwargs['pk'], poster=self.request.user)
+        if post.exists():
+            # delete the post
+            return self.destroy(request, *args, **kwargs)
+        else:
+            raise ValidationError('This isn\'t your post to delete!')
+
 
 # use mixins for deleting votes - added later
 class VoteCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
