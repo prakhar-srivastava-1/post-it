@@ -17,6 +17,13 @@ class PostList(generics.ListCreateAPIView):
         serializer.save(poster=self.request.user)
 
 
+# deleting posts
+class PostRetrieveDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
 # use mixins for deleting votes - added later
 class VoteCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
     serializer_class = VoteSerializer
