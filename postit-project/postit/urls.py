@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 # import below shows up as error but works fine
 from posts import views as post_views
 
@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/posts', post_views.PostList.as_view()),
     path('api/posts/<int:pk>/vote', post_views.VoteCreate.as_view()),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
