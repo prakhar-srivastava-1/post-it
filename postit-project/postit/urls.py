@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# import below shows up as error but works fine
+from posts import views as post_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/posts', post_views.PostList.as_view()),
 ]
+
