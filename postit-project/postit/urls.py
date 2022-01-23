@@ -24,4 +24,3 @@ urlpatterns = [
     path('api/posts/<int:pk>/vote', post_views.VoteCreate.as_view()),
     path('api-auth/', include('rest_framework.urls')),
 ]
-

@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, mixins, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 from .models import Post, Vote
 from .serializers import PostSerializer, VoteSerializer
 
@@ -16,7 +17,8 @@ class PostList(generics.ListCreateAPIView):
         serializer.save(poster=self.request.user)
 
 
-class VoteCreate(generics.CreateAPIView):
+# use mixins for deleting votes - added later
+class VoteCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
     serializer_class = VoteSerializer
     permissions_class = [permissions.IsAuthenticated]
 
@@ -37,3 +39,11 @@ class VoteCreate(generics.CreateAPIView):
             raise ValidationError('You have already voted for this post!')
         # else save the vote
         serializer.save(voter=self.request.user, post=Post.objects.get(pk=self.kwargs['pk']))
+
+    # delete your vote if it exists
+    def delete(self, request, *args, **kwargs):
+        if self.get_queryset().exists():
+            self.get_queryset().delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            raise ValidationError('You never voted for this post!')
