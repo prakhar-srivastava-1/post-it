@@ -21,5 +21,6 @@ from posts import views as post_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/posts', post_views.PostList.as_view()),
+    path('api/posts/<int:pk>/vote', post_views.VoteCreate.as_view()),
 ]
 
