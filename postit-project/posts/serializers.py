@@ -14,7 +14,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['id', 'title', 'url', 'poster', 'poster_id', 'created', 'votes']
 
-    # name of method should be get_<variable>() - get_cote() here
+    # name of method should be get_<variable>() - get_votes() here
     def get_votes(self, post):
         return Vote.objects.filter(post=post).count()
 
